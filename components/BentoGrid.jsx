@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
-import { ArrowUpRight, Mail, Phone, MapPin, Calendar, Award, Briefcase, GraduationCap } from 'lucide-react';
+import { ArrowUpRight, Mail, Phone, MapPin, Briefcase, GraduationCap, Award } from 'lucide-react';
 
 // Custom GitHub inline icon
 const GithubIcon = ({ size = 16, className = "" }) => (
@@ -23,8 +23,8 @@ const GithubIcon = ({ size = 16, className = "" }) => (
   </svg>
 );
 
-// Bento Card Wrapper with mouse spotlight tracking and spring hovers
-function BentoCard({ children, className = "", onClick }) {
+// Bento Card Wrapper supporting native anchor fallback to bypass pop-up blockers
+function BentoCard({ children, className = "", href }) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -34,13 +34,16 @@ function BentoCard({ children, className = "", onClick }) {
     mouseY.set(clientY - top);
   };
 
+  const Component = href ? motion.a : motion.div;
+  const extraProps = href ? { href, target: '_blank', rel: 'noreferrer' } : {};
+
   return (
-    <motion.div
+    <Component
       onMouseMove={handleMouseMove}
-      onClick={onClick}
       whileHover={{ scale: 1.012, y: -4 }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      className={`relative bg-[#0d0d0d]/40 border border-white/5 backdrop-blur-[16px] rounded-3xl p-8 overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)] ${className} ${onClick ? 'cursor-pointer' : ''}`}
+      className={`relative bg-[#0d0d0d]/40 border border-white/5 backdrop-blur-[16px] rounded-3xl p-8 overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)] ${className} ${href ? 'cursor-pointer block' : ''}`}
+      {...extraProps}
     >
       {/* Spotlight Hover Glow */}
       <motion.div
@@ -52,17 +55,13 @@ function BentoCard({ children, className = "", onClick }) {
       <div className="relative z-20 h-full flex flex-col justify-between">
         {children}
       </div>
-    </motion.div>
+    </Component>
   );
 }
 
 export default function BentoGrid() {
-  const handleLinkClick = (url) => {
-    window.open(url, '_blank');
-  };
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full text-left">
       
       {/* 1. Profile Bio Card (col-span-8) */}
       <BentoCard className="md:col-span-8 min-h-[320px]">
@@ -140,7 +139,7 @@ export default function BentoGrid() {
       {/* 3. Featured Showcase Module 1: Code-Archaeologist (col-span-6) */}
       <BentoCard
         className="md:col-span-6 project-card"
-        onClick={() => handleLinkClick('https://github.com/Monikasrirangam/Code-Archaeologist')}
+        href="https://github.com/Monikasrirangam/Code-Archaeologist"
       >
         <div>
           <div className="flex justify-between items-start mb-6">
@@ -159,7 +158,7 @@ export default function BentoGrid() {
           <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
             Code-Archaeologist
           </h3>
-          <p className="text-[#8A8A8A] text-xs leading-relaxed mb-6">
+          <p className="text-[#8A8A8A] text-xs leading-relaxed mb-6 font-medium">
             A developer utility that recursively scrapes code structures, builds AST maps, and reports static complexity scores.
           </p>
         </div>
@@ -187,7 +186,7 @@ export default function BentoGrid() {
       {/* 4. Featured Showcase Module 2: Weather-App (col-span-6) */}
       <BentoCard
         className="md:col-span-6 project-card"
-        onClick={() => handleLinkClick('https://github.com/Monikasrirangam/weather-app')}
+        href="https://github.com/Monikasrirangam/weather-app"
       >
         <div>
           <div className="flex justify-between items-start mb-6">
@@ -206,7 +205,7 @@ export default function BentoGrid() {
           <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
             Weather-App
           </h3>
-          <p className="text-[#8A8A8A] text-xs leading-relaxed mb-6">
+          <p className="text-[#8A8A8A] text-xs leading-relaxed mb-6 font-medium">
             A beautiful, minimalist real-time dashboard visualizing localized API weather metrics, wind speed, and UV forecasts.
           </p>
         </div>
