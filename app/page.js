@@ -6,6 +6,7 @@ import { Mail, Phone } from 'lucide-react';
 import AntiGravityCanvas from '../components/AntiGravityCanvas';
 import CustomCursor from '../components/CustomCursor';
 import BentoGrid from '../components/BentoGrid';
+import PixelScanEffect from '../components/PixelScanEffect';
 
 export default function Page() {
   const { scrollY } = useScroll();
@@ -69,15 +70,11 @@ export default function Page() {
           </motion.span>
 
           {/* Editorial Title */}
-          <motion.h1
-            custom={1}
-            initial="hidden"
-            animate="visible"
-            variants={revealVariants}
-            className="text-6xl md:text-8xl font-black tracking-tighter leading-none"
-          >
-            MONIKA <span className="font-serif italic font-normal text-[#8A8A8A]">SRIRANGAM</span>
-          </motion.h1>
+          <PixelScanEffect mode={0} speed={0.9} delay={0.2} width={0.15} layers={3.0}>
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none">
+              MONIKA <span className="font-serif italic font-normal text-[#8A8A8A]">SRIRANGAM</span>
+            </h1>
+          </PixelScanEffect>
 
           <motion.p
             custom={2}
